@@ -7,21 +7,23 @@ Tired of switching panes in tmux or even moving to another window to build my pr
 You use profiles to indicate what needs to be built, this way you can multiple instances of build server running at the same time.
 
 Profile sample:
-```json
+
+```javascript
 {
+    "host": "localhost",
     "port": ":8080",
     "directory": "/home/rendon/workspace/buildserver",
     "command": ["go", "build"]
 }
 ```
 
-## Run
+## Run server
 Run the server as follows:
 ```bash
 $ buildserver /path/to/profile.json
 ```
 
-## The client
+## Send build request
 ```bash
 $ buildclient /path/to/profile.json
 ```
