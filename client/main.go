@@ -19,7 +19,7 @@ func main() {
 		fatalf("Failed to load profile: %s", err)
 	}
 
-	url := fmt.Sprintf("http://%s%s", prof.Host, prof.Port)
+	url := fmt.Sprintf("http://%s%s/build", prof.Host, prof.Port)
 	resp, err := http.Get(url)
 	if err != nil {
 		fatalf("Build request failed: %s", err)
