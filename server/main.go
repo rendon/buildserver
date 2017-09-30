@@ -17,7 +17,12 @@ func fatalf(format string, args ...interface{}) {
 	os.Exit(1)
 }
 
-func printOutput(rc io.ReadCloser) {
+func printOutput(rc io.ReadCloser, done chan bool) {
+	defer func() {
+		rc.Close()
+		done <- true
+	}()
+
 	buf := make([]byte, 1024)
 	for {
 		n, err := rc.Read(buf)
@@ -59,8 +64,13 @@ func build(prof profile.Profile) {
 		return
 	}
 
-	go printOutput(stderr)
-	go printOutput(stdout)
+	done := make(chan bool)
+	go printOutput(stderr, done)
+	go printOutput(stdout, done)
+
+	// Wait for print STDERR and print STDOUT to finish
+	<-done
+	<-done
 
 	if err := cmd.Wait(); err != nil {
 		log.Printf("%s", err)
