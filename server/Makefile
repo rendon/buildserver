@@ -2,5 +2,5 @@ build:
 	go vet
 	go build
 
-install:
+install: build
 	cp -v server ~/bin/buildserver
